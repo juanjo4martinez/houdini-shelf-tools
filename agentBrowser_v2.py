@@ -25,6 +25,10 @@ This code looks for subfolders too, so if you store your .FBX motion clips
 in the same directory as your .FBX agents you may get some unexpected results.
 In order to avoid that, make sure to have ONLY YOUR .FBX CHARACTERS in the
 Agent Directory, each in its own folder.
+
+*** If you are using HOUDINI 18.5, replace the .items() method by .iteritems()
+so that it can be run in PYTHON 2.7 ***
+
 '''
 
 import os
@@ -148,7 +152,7 @@ class ThumbnailGenerator():
         obj = hou.node('/obj/')
        
         # Iterate through every item in the "needThumbnail" dictionary
-        for agent, filePath in self.needThumbnail.iteritems():
+        for agent, filePath in self.needThumbnail.items():
        
             # Create a Geometry node
             geo = obj.createNode('geo','agent_{}'.format(agent))
@@ -310,7 +314,7 @@ class AgentBrowser(QtWidgets.QWidget):
        
         # Run ADD_BUTTON() for each Agent in the dictionary
         # Note: The dictionary is first put in alphabetical order
-        for i, (agent_in_dict, filePath_in_dict) in enumerate(sorted(thumbGen.search_fbx().iteritems())):
+        for i, (agent_in_dict, filePath_in_dict) in enumerate(sorted(thumbGen.search_fbx().items())):
             self.add_button(i, agent_in_dict, filePath_in_dict)                                                                                
        
        
