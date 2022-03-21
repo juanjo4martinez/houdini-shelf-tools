@@ -18,6 +18,9 @@ NOTE:
 This tool looks at File Cache nodes. Feel free to change the nodeType variable with the type
 of node you want to use (e.g: If you want to look at a Crowd Source instead of a File Cache,
 change the variable to "crowdsource::3.0")
+
+*** If you are using HOUDINI 18.5, replace the .items() method by .iteritems(),
+and the zip() function by itertools.izip() so that it can be run in PYTHON 2.7 ***
 '''
 
 
@@ -160,7 +163,7 @@ shapeOptCount = sum([len(shapeName) for shapeName in shapeList])
 dict = {}
 
 # Iterate through the Agent Names and Agent Shape lists in parallel
-for agent,shape in itertools.izip(agentList,shapeList):
+for agent,shape in zip(agentList,shapeList):
    
     # Generate a dictionary > Keys: Agent Names, Values: Agent Shapes
     dict[agent] = shape
@@ -252,7 +255,7 @@ class StylesheetGUI(QtWidgets.QWidget):
         self.labelList = []
      
         # >>>> Run "addAgentName" method for each Agent Shape in the list
-        for i, (agent_in_dict, shapes_in_dict) in enumerate(dict.iteritems()):
+        for i, (agent_in_dict, shapes_in_dict) in enumerate(dict.items()):
             self.addAgentName(i, agent_in_dict, shapes_in_dict)
 
                                    
@@ -399,7 +402,7 @@ class StylesheetGUI(QtWidgets.QWidget):
         """ The order in which they enter the list will be used as index
         (i.e: For the first shape, we'll pick the File Path of the first button, etc.) """
        
-        for agent_in_dict, shapes_in_dict in dict.iteritems():
+        for agent_in_dict, shapes_in_dict in dict.items():
             for shape in shapes_in_dict:
                 auxList.append(shape)
 
@@ -420,7 +423,7 @@ class StylesheetGUI(QtWidgets.QWidget):
         self.styleList = []              
 
         # Create a dictionary (i.e: style) for each Agent Shape
-        for agent_in_dict, shapes_in_dict in dict.iteritems():
+        for agent_in_dict, shapes_in_dict in dict.items():
             for shape in shapes_in_dict:
            
                 # Target geometry
