@@ -27,7 +27,10 @@ In order to avoid that, make sure to have ONLY YOUR .FBX CHARACTERS in the
 Agent Directory, each in its own folder.
 
 *** If you are using HOUDINI 18.5, replace the .items() method by .iteritems()
-so that it can be run in PYTHON 2.7 ***
+so that it can be run in PYTHON 2.7.
+
+Replace also the "copysourcelayer1" parameter by "sourcecopy" so that it works
+with the old version of the Agent Layer node ***
 
 '''
 
@@ -480,7 +483,7 @@ class AgentBrowser(QtWidgets.QWidget):
             # and activate the Source Layer checkbox so we can see the character
             agentLayerNode = agentSetupNode.createNode('agentlayer', '{}_layer'.format(agent_in_dict))
             agentLayerNode.setInput(0, agentClipNode)
-            agentLayerNode.parm('sourcecopy').set(1)
+            agentLayerNode.parm('copysourcelayer1').set(1)
    
             # Create an Agent Prep node and connect it to the Agent Layer node
             agentPrepNode = agentSetupNode.createNode('agentprep::3.0', '{}_prep'.format(agent_in_dict))
