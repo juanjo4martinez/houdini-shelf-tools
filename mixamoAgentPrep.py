@@ -22,93 +22,73 @@ null.setInput(0, aux_node)
 null.setSelected(True, clear_all_selected=True)
 this_node = hou.selectedNodes()
 
-# Get the joints and configure them.
+# Get the joints.
 joints = crowdstoolutils.buildTransformMenu(this_node[0])
-
-for joint in joints:    
-    # Left leg.
-    if joint.endswith("LeftUpLeg"):
-        upperLeg_L = joint 
-    if joint.endswith("LeftLeg"):
-        knee_L = joint
-    if joint.endswith("LeftFoot"):    
-        ankle_L = joint
-    if joint.endswith("LeftToeBase"):
-        toe_L = joint
-    
-    # Right leg.
-    if joint.endswith("RightUpLeg"):
-        upperLeg_R = joint 
-    if joint.endswith("RightLeg"):
-        knee_R = joint
-    if joint.endswith("RightFoot"):    
-        ankle_R = joint
-    if joint.endswith("RightToeBase"):
-        toe_R = joint
-
-    # Torso.
-    if joint.endswith("Hips"):
-        hips = joint 
-    if joint.endswith("Spine"):
-        lowerBack = joint
-    if joint.endswith("Head"):    
-        head = joint
-
-    # Left arm.
-    if joint.endswith("LeftShoulder"):
-        upperArm_L = joint
-    if joint.endswith("LeftArm"):
-        lowerArm_L = joint
-    if joint.endswith("LeftHand"):
-        hand_L = joint
-
-    # Right arm.
-    if joint.endswith("RightShoulder"):
-        upperArm_R = joint
-    if joint.endswith("RightArm"):
-        lowerArm_R = joint
-    if joint.endswith("RightHand"):
-        hand_R = joint
 
 # Create an Agent Prep node and connect it to the selected node.
 this_node = this_node[0]
 agent_prep_node = this_node.parent().createNode("agentprep")
 agent_prep_node.setInput(0, this_node)
 
-# Set the Upper Limbs.
-agent_prep_node.parm("upperlimbs").set(2)
-
-agent_prep_node.parm("upperarm1").set(upperArm_L)
-agent_prep_node.parm("lowerarm1").set(lowerArm_L)
-agent_prep_node.parm("hand1").set(hand_L)
-
-agent_prep_node.parm("upperarm2").set(upperArm_R)
-agent_prep_node.parm("lowerarm2").set(lowerArm_R)
-agent_prep_node.parm("hand2").set(hand_R)
-
-# Set the Torso.
-agent_prep_node.parm("torso").set(1)
-
-agent_prep_node.parm("hips1").set(hips)
-agent_prep_node.parm("lowerback1").set(lowerBack)
-agent_prep_node.parm("head1").set(head)
-
-# Set the Lower Limbs.
-agent_prep_node.parm("lowerlimbs").set(2)
-
-agent_prep_node.parm("upperleg1").set(upperLeg_L)
-agent_prep_node.parm("knee1").set(knee_L)
-agent_prep_node.parm("ankle1").set(ankle_L)
-agent_prep_node.parm("toe1").set(toe_L)
-
-agent_prep_node.parm("upperleg2").set(upperLeg_R)
-agent_prep_node.parm("knee2").set(knee_R)
-agent_prep_node.parm("ankle2").set(ankle_R)
-agent_prep_node.parm("toe2").set(toe_R)
-
 # Set the Display/Render flag on the Agent Prep node.
 agent_prep_node.setDisplayFlag(True)
 agent_prep_node.setRenderFlag(True)
+
+# Activate the Upper Limbs.
+agent_prep_node.parm("upperlimbs").set(2)
+
+# Activate the Torso.
+agent_prep_node.parm("torso").set(1)
+
+# Activate the Lower Limbs.
+agent_prep_node.parm("lowerlimbs").set(2)
+
+# Iterate the joints and apply them to the corresponding parameter.
+for joint in joints:
+
+    # Left leg.
+    if joint.endswith("LeftUpLeg"):
+        agent_prep_node.parm("upperleg1").set(joint)
+    if joint.endswith("LeftLeg"):
+        agent_prep_node.parm("knee1").set(joint)
+    if joint.endswith("LeftFoot"):    
+        agent_prep_node.parm("ankle1").set(joint)
+    if joint.endswith("LeftToeBase"):
+        agent_prep_node.parm("toe1").set(joint)
+    
+    # Right leg.
+    if joint.endswith("RightUpLeg"):
+        agent_prep_node.parm("upperleg2").set(joint)
+    if joint.endswith("RightLeg"):
+        agent_prep_node.parm("knee2").set(joint)
+    if joint.endswith("RightFoot"):    
+        agent_prep_node.parm("ankle2").set(joint)
+    if joint.endswith("RightToeBase"):
+        agent_prep_node.parm("toe2").set(joint)
+
+    # Torso.
+    if joint.endswith("Hips"):
+        agent_prep_node.parm("hips1").set(joint)
+    if joint.endswith("Spine"):
+        agent_prep_node.parm("lowerback1").set(joint)
+    if joint.endswith("Head"):    
+        agent_prep_node.parm("head1").set(joint)
+        
+    # Left arm.
+    if joint.endswith("LeftShoulder"):
+        agent_prep_node.parm("upperarm1").set(joint)
+    if joint.endswith("LeftArm"):
+        agent_prep_node.parm("lowerarm1").set(joint)
+    if joint.endswith("LeftHand"):
+        agent_prep_node.parm("hand1").set(joint)
+
+    # Right arm.
+    if joint.endswith("RightShoulder"):
+        agent_prep_node.parm("upperarm2").set(joint)
+    if joint.endswith("RightArm"):
+        agent_prep_node.parm("lowerarm2").set(joint)
+    if joint.endswith("RightHand"):
+        agent_prep_node.parm("hand2").set(joint)
 
 # Create Foot Plant CHOP Network.
 agent_prep_node.parm("createchopnet").pressButton()
